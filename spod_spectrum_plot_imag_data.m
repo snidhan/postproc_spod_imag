@@ -1,4 +1,4 @@
-function [] = spod_spectrum_plot_imag_data(x, m)
+function [eigvalue, f] = spod_spectrum_plot_imag_data(x, m)
 %% Written by Sheel Nidhan
 %  Plotting the SPOD spectrum for a specific azimuthal wavenumber
 close all;
@@ -6,13 +6,13 @@ close all;
 
 Nfreq = 512;
 Novlp = 256;
-N     = 7000;
+N     = 7200;
 mode  = m;
 stride = 100;
 nstart = 1892600;
 nend = nstart + (N-1)*stride;
-%dir2 = strcat('/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/x_D_', int2str(x), '/eigenspectra/');
-dir2 = '/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/3dplane_spod/eigenspectrum/';
+dir2 = strcat('/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/x_D_', int2str(x), '/eigenspectrum/');
+%dir2 = '/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/';
 disp(dir2);
 %% Reading the time file
 
@@ -65,6 +65,9 @@ for i  = 1:Nfreq
     eigvalue(i,:) = sort(eigvalue(i,:),'descend');
 end
 
+
+
+
 %% Plotting SPOD eigenvalues
 
 Nplot = 25;   % No. of modes to plot
@@ -88,11 +91,11 @@ hYLabel = ylabel('SPOD mode energy','interpreter','latex','fontsize',15);
 %                'interpreter','latex','fontsize',15);
 %% Saving images
 
-% set(gcf, 'PaperPositionMode', 'auto');
-% print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.png'),'-dpng','-r600');  
-% print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.eps'),'-depsc','-r600');  
+%set(gcf, 'PaperPositionMode', 'auto');
+%print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.png'),'-dpng','-r600');  
+%print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.eps'),'-depsc','-r600');  
 
-set(gcf, 'PaperPositionMode', 'auto');
-print(gcf,strcat('spod_spectra_',int2str(mode),'_3dplane_','.png'),'-dpng','-r600');  
-print(gcf,strcat('spod_spectra_',int2str(mode),'_3dplane_','.eps'),'-depsc','-r600');  
+% set(gcf, 'PaperPositionMode', 'auto');
+% print(gcf,strcat('spod_spectra_',int2str(mode),'_3dplane_','.png'),'-dpng','-r600');  
+% print(gcf,strcat('spod_spectra_',int2str(mode),'_3dplane_','.eps'),'-depsc','-r600');  
 

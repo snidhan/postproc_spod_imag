@@ -5,7 +5,7 @@ function [] = spod_eigenmodes_plot(x, m, Nf_sampled, Nblk_sampled)
 
 Nfreq = 512;
 Novlp = 256;
-N     = 7000;
+N     = 7200;
 mode  = m;
 stride = 100;
 nstart = 1892600;
@@ -16,7 +16,7 @@ Nblk = floor((N-Novlp)/(Nfreq-Novlp));
 Nrows = numvar*nr*Nblk;
 Nrows_permode = numvar*nr;
 
-dir2 = strcat('/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/x_D_', int2str(x), '/eigenmodes/');
+dir2 = strcat('/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/x_D_', int2str(x), '/eigenmodes/');
 disp(dir2);
 
 %% Loading the grid file in radial direction
@@ -83,7 +83,7 @@ end
 %% Rearranging the eigmodes for visualization
 
 for i = 1:Nf_sampled
-    eigenmodes_arranged(:,:,i) = reshape(eigmodes(:,1), [Nrows_permode, Nblk]);
+    eigenmodes_arranged(:,:,i) = reshape(eigmodes(:,i), [Nrows_permode, Nblk]); %#ok<*AGROW>
 end
 
 eigenmodes_proper_ranked = flip(eigenmodes_arranged, 2);

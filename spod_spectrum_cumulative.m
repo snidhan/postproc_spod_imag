@@ -2,7 +2,6 @@
 %  Plotting the cumulative SPOD spectrum integrated over frequency for a specific azimuthal wavenumber
 
 clc; clear;
-
 %% SPOD Parameters
 
 Nfreq = 512;

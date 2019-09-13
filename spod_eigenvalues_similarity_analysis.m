@@ -1,5 +1,6 @@
 %% Written by Sheel Nidhan
-%  Plotting the SPOD eigenvalues for a given x/D
+%  Plotting the SPOD eigenvalues for a given x/D for similarity analysis
+
 clear; clc; close all;
 Nfreq             = 512;
 Novlp             = 256;
@@ -8,14 +9,14 @@ stride            = 100;
 nstart            = 1892600;
 nend              = nstart + (N-1)*stride;
 mode_sampled      = linspace(0,10,11)';
-x_sampled =  [5; 10; 15; 20; 25; 30; 35; 40; 45; 50; 55; 60; 65; 70; 75; 80; 85; 90; 95; 100; 110; 120];
-loc_planes = [5; 10; 15; 20; 25; 30; 35; 40; 45; 50; 55; 60; 65; 70; 75; 80; 85; 90; 95; 100; 110; 120];
+x_sampled         =  [5; 10; 15; 20; 25; 30; 35; 40; 45; 50; 55; 60; 65; 70; 75; 80; 85; 90; 95; 100; 110; 120];
+loc_planes        = [5; 10; 15; 20; 25; 30; 35; 40; 45; 50; 55; 60; 65; 70; 75; 80; 85; 90; 95; 100; 110; 120];
 half_width        = [1.6378; 2.1689; 2.6075; 2.74025; 2.7666; 2.8444; 2.8634; 2.8839; 3.0012];
 numvar = 3;
 Nblk = floor((N-Novlp)/(Nfreq-Novlp));
-Nblk_sampled = 26; 
+Nblk_sampled = 27; 
 Nf_sampled = 100;
-dir_modes = '/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/matlab_files/spectrum/';
+dir_modes = '/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/matlab_files/spectrum/';
 disp(dir_modes);
 
 %% Reading the time file
@@ -24,12 +25,11 @@ time = importdata ('/home/sheel/Work/projects/spod_re5e4/post/frinf/time_stamps/
 time_spod = time(1:N,1);
 dt   = time_spod(2:end,1) - time_spod(1:end-1,1);
 
-
 %% Importing Karu's datafiles
 
 filename = '/home/sheel/Dropbox/spod_re5e4/statistical_results/Half_length_zwhazi_TKE.dat';
 LK_TKE   = importdata(filename);
-
+LK_TKE_loc_planes = zeros(22,2);
 for i = 1:size(loc_planes)
     [val idx] = min(abs(loc_planes(i,1)-LK_TKE(:,1)));
     LK_TKE_loc_planes(i,2) = LK_TKE(idx,4);
@@ -39,7 +39,7 @@ end
 
 filename = '/home/sheel/Dropbox/spod_re5e4/statistical_results/Half_length_zwhazi_WMEAN.dat';
 LK_mean   = importdata(filename);
-
+LK_mean_loc_planes = zeros(22,2);
 for i = 1:size(loc_planes)
     [val idx] = min(abs(loc_planes(i,1)-LK_mean(:,1)));
     LK_mean_loc_planes(i,2) = LK_mean(idx,4);
@@ -48,7 +48,7 @@ end
 
 filename = '/home/sheel/Dropbox/spod_re5e4/statistical_results/TKE_centerline.dat';
 TKE_Centerline   = importdata(filename);
-
+TKE_centerline_loc_planes = zeros(22,2);
 for i = 1:size(loc_planes)
     [val idx] = min(abs(loc_planes(i,1)-TKE_Centerline(:,1)));
     TKE_centerline_loc_planes(i,2) = TKE_Centerline(idx,2);
@@ -58,7 +58,7 @@ end
 
 filename = '/home/sheel/Dropbox/spod_re5e4/statistical_results/UX_rms_centerline.dat';
 ux_Centerline   = importdata(filename);
-
+ux_centerline_loc_planes = zeros(22,2);
 for i = 1:size(loc_planes)
     [val idx] = min(abs(loc_planes(i,1)-ux_Centerline(:,1)));
     ux_centerline_loc_planes(i,2) = ux_Centerline(idx,2);
@@ -67,13 +67,31 @@ end
 
 filename = '/home/sheel/Dropbox/spod_re5e4/statistical_results/Defect_centerline.dat';
 ud_Centerline   = importdata(filename);
-
+ud_centerline_loc_planes = zeros(22,2);
 for i = 1:size(loc_planes)
     [val idx] = min(abs(loc_planes(i,1)-ud_Centerline(:,1)));
     ud_centerline_loc_planes(i,2) = ud_Centerline(idx,2);
     ud_centerline_loc_planes(i,1) = ud_Centerline(idx,1);
 end
 
+
+filename = '/home/sheel/Dropbox/spod_re5e4/statistical_results/MKE_areaI_FINF.dat';
+mke_area   = importdata(filename);
+mke_area_loc_planes = zeros(22,2);
+for i = 1:size(loc_planes)
+    [val idx] = min(abs(loc_planes(i,1)-mke_area(:,1)));
+    mke_area_loc_planes(i,2) = mke_area(idx,2);
+    mke_area_loc_planes(i,1) = mke_area(idx,1);
+end
+
+filename = '/home/sheel/Dropbox/spod_re5e4/statistical_results/TKE_areaI_FINF.dat';
+tke_area   = importdata(filename);
+tke_area_loc_planes = zeros(22,2);
+for i = 1:size(loc_planes)
+    [val idx] = min(abs(loc_planes(i,1)-tke_area(:,1)));
+    tke_area_loc_planes(i,2) = tke_area(idx,2);
+    tke_area_loc_planes(i,1) = tke_area(idx,1);
+end
 
 %%  Partitioning the time data in different blocks
 
@@ -117,93 +135,120 @@ for i_mode = 1:size(mode_sampled,1)
 end
 end
 
+
+
 %% Plotting eigenspectra of interest
 
+dirout = '/home/sheel/Work/codes/spod_re5e4_misc_analysis/spod_plots/files/';
+save(strcat(dirout, 'eigvalues_similarity_diff_loc.mat'), 'f', 'eigenspectra_allm', 'TKE_centerline_loc_planes', 'LK_TKE_loc_planes', ...
+                    'ud_centerline_loc_planes', 'LK_mean_loc_planes', 'mke_area_loc_planes', 'tke_area_loc_planes');
+
 % m=2, normalized by (K^0.5/2*L_k)^2
-figure;
-hold on;
-h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,8)/((TKE_centerline_loc_planes(8,2)^0.5)*LK_TKE_loc_planes(8,2))^2,     'bo','MarkerSize',7);
-h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,9)/((TKE_centerline_loc_planes(9,2)^0.5)*LK_TKE_loc_planes(9,2))^2,     'r*','MarkerSize',7);
-h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,10)/((TKE_centerline_loc_planes(10,2)^0.5)*LK_TKE_loc_planes(10,2))^2,  'kd','MarkerSize',7);
-h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,11)/((TKE_centerline_loc_planes(11,2)^0.5)*LK_TKE_loc_planes(11,2))^2,  'c>','MarkerSize',7);
-h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,12)/((TKE_centerline_loc_planes(12,2)^0.5)*LK_TKE_loc_planes(12,2))^2,  'g<','MarkerSize',7);
-h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,13)/((TKE_centerline_loc_planes(13,2)^0.5)*LK_TKE_loc_planes(13,2))^2,  'b+','MarkerSize',7);
-h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,14)/((TKE_centerline_loc_planes(14,2)^0.5)*LK_TKE_loc_planes(14,2))^2,  'r^','MarkerSize',7);
-h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,15)/((TKE_centerline_loc_planes(15,2)^0.5)*LK_TKE_loc_planes(15,2))^2,  'kv','MarkerSize',7);
-h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,16)/((TKE_centerline_loc_planes(16,2)^0.5)*LK_TKE_loc_planes(16,2))^2,  'gp','MarkerSize',7);
-h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,17)/((TKE_centerline_loc_planes(17,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'ch','MarkerSize',7);
-h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,18)/((TKE_centerline_loc_planes(18,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'bx','MarkerSize',7);
-h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,19)/((TKE_centerline_loc_planes(19,2)^0.5)*LK_TKE_loc_planes(19,2))^2, 'b<','MarkerSize',7);
-h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,20)/((TKE_centerline_loc_planes(20,2)^0.5)*LK_TKE_loc_planes(20,2))^2, 'mo','MarkerSize',7);
-h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,21)/((TKE_centerline_loc_planes(21,2)^0.5)*LK_TKE_loc_planes(21,2))^2, 'md','MarkerSize',7);
-h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,22)/((TKE_centerline_loc_planes(22,2)^0.5)*LK_TKE_loc_planes(22,2))^2, 'm^','MarkerSize',7);
-xlim([0 0.4]);
-ylim([0 0.3]);
+% figure;
+% hold on;
+% h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,8)/((TKE_centerline_loc_planes(8,2)^0.5)*LK_TKE_loc_planes(8,2))^2,     'bo','MarkerSize',7); %#ok<*NASGU>
+% h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,9)/((TKE_centerline_loc_planes(9,2)^0.5)*LK_TKE_loc_planes(9,2))^2,     'r*','MarkerSize',7);
+% h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,10)/((TKE_centerline_loc_planes(10,2)^0.5)*LK_TKE_loc_planes(10,2))^2,  'kd','MarkerSize',7);
+% h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,11)/((TKE_centerline_loc_planes(11,2)^0.5)*LK_TKE_loc_planes(11,2))^2,  'c>','MarkerSize',7);
+% h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,12)/((TKE_centerline_loc_planes(12,2)^0.5)*LK_TKE_loc_planes(12,2))^2,  'g<','MarkerSize',7);
+% h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,13)/((TKE_centerline_loc_planes(13,2)^0.5)*LK_TKE_loc_planes(13,2))^2,  'b+','MarkerSize',7);
+% h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,14)/((TKE_centerline_loc_planes(14,2)^0.5)*LK_TKE_loc_planes(14,2))^2,  'r^','MarkerSize',7);
+% h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,15)/((TKE_centerline_loc_planes(15,2)^0.5)*LK_TKE_loc_planes(15,2))^2,  'kv','MarkerSize',7);
+% h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,16)/((TKE_centerline_loc_planes(16,2)^0.5)*LK_TKE_loc_planes(16,2))^2,  'gp','MarkerSize',7);
+% h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,17)/((TKE_centerline_loc_planes(17,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'ch','MarkerSize',7);
+% h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,18)/((TKE_centerline_loc_planes(18,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'bx','MarkerSize',7);
+% h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,19)/((TKE_centerline_loc_planes(19,2)^0.5)*LK_TKE_loc_planes(19,2))^2, 'b<','MarkerSize',7);
+% h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,20)/((TKE_centerline_loc_planes(20,2)^0.5)*LK_TKE_loc_planes(20,2))^2, 'mo','MarkerSize',7);
+% h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,21)/((TKE_centerline_loc_planes(21,2)^0.5)*LK_TKE_loc_planes(21,2))^2, 'md','MarkerSize',7);
+% h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,22)/((TKE_centerline_loc_planes(22,2)^0.5)*LK_TKE_loc_planes(22,2))^2, 'm^','MarkerSize',7);
+% xlim([0 0.4]);
+% ylim([0 0.3]);
+
+% m=0, normalized by (K^0.5/2*L_k)^2
+% figure;
+% hold on;
+% h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,8)/((TKE_centerline_loc_planes(8,2)^0.5)*LK_TKE_loc_planes(8,2))^2,     'bo','MarkerSize',7);
+% h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,9)/((TKE_centerline_loc_planes(9,2)^0.5)*LK_TKE_loc_planes(9,2))^2,     'r*','MarkerSize',7);
+% h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,10)/((TKE_centerline_loc_planes(10,2)^0.5)*LK_TKE_loc_planes(10,2))^2,  'kd','MarkerSize',7);
+% h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,11)/((TKE_centerline_loc_planes(11,2)^0.5)*LK_TKE_loc_planes(11,2))^2,  'c>','MarkerSize',7);
+% h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,12)/((TKE_centerline_loc_planes(12,2)^0.5)*LK_TKE_loc_planes(12,2))^2,  'g<','MarkerSize',7);
+% h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,13)/((TKE_centerline_loc_planes(13,2)^0.5)*LK_TKE_loc_planes(13,2))^2,  'b+','MarkerSize',7);
+% h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,14)/((TKE_centerline_loc_planes(14,2)^0.5)*LK_TKE_loc_planes(14,2))^2,  'r^','MarkerSize',7);
+% h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,15)/((TKE_centerline_loc_planes(15,2)^0.5)*LK_TKE_loc_planes(15,2))^2,  'kv','MarkerSize',7);
+% h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,16)/((TKE_centerline_loc_planes(16,2)^0.5)*LK_TKE_loc_planes(16,2))^2,  'gp','MarkerSize',7);
+% h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,17)/((TKE_centerline_loc_planes(17,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'ch','MarkerSize',7);
+% h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,18)/((TKE_centerline_loc_planes(18,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'bx','MarkerSize',7);
+% h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,19)/((TKE_centerline_loc_planes(19,2)^0.5)*LK_TKE_loc_planes(19,2))^2, 'b<','MarkerSize',7);
+% h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,20)/((TKE_centerline_loc_planes(20,2)^0.5)*LK_TKE_loc_planes(20,2))^2, 'mo','MarkerSize',7);
+% h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,21)/((TKE_centerline_loc_planes(21,2)^0.5)*LK_TKE_loc_planes(21,2))^2, 'md','MarkerSize',7);
+% h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,22)/((TKE_centerline_loc_planes(22,2)^0.5)*LK_TKE_loc_planes(22,2))^2, 'm^','MarkerSize',7);
+% xlim([0 0.4]);
+% ylim([0 0.3]);
 
 % m=1 normalized by (U_dL_mean)^2
-figure;
-hold on
-h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,1)/((ud_centerline_loc_planes(1,2)^1)*LK_mean_loc_planes(1,2))^2,     'bo','MarkerSize',7);
-h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,2)/((ud_centerline_loc_planes(2,2)^1)*LK_mean_loc_planes(2,2))^2,     'r*','MarkerSize',7);
-h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,3)/((ud_centerline_loc_planes(3,2)^1)*LK_mean_loc_planes(3,2))^2,  'kd','MarkerSize',7);
-h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,4)/((ud_centerline_loc_planes(4,2)^1)*LK_mean_loc_planes(4,2))^2,  'c>','MarkerSize',7);
-h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,5)/((ud_centerline_loc_planes(5,2)^1)*LK_mean_loc_planes(5,2))^2,  'g<','MarkerSize',7);
-h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,6)/((ud_centerline_loc_planes(6,2)^1)*LK_mean_loc_planes(6,2))^2,  'b+','MarkerSize',7);
-h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,7)/((ud_centerline_loc_planes(7,2)^1)*LK_mean_loc_planes(7,2))^2,  'r^','MarkerSize',7);
-h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,8)/((ud_centerline_loc_planes(8,2)^1)*LK_mean_loc_planes(8,2))^2,  'kv','MarkerSize',7);
-h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,9)/((ud_centerline_loc_planes(9,2)^1)*LK_mean_loc_planes(9,2))^2,  'gp','MarkerSize',7);
-h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,10)/((ud_centerline_loc_planes(10,2)^1)*LK_mean_loc_planes(10,2))^2, 'ch','MarkerSize',7);
-h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,11)/((ud_centerline_loc_planes(11,2)^1)*LK_mean_loc_planes(11,2))^2, 'bx','MarkerSize',7);
-h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,12)/((ud_centerline_loc_planes(12,2)^1)*LK_mean_loc_planes(12,2))^2, 'b<','MarkerSize',7);
-h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,13)/((ud_centerline_loc_planes(13,2)^1)*LK_mean_loc_planes(13,2))^2, 'mo','MarkerSize',7);
-h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,14)/((ud_centerline_loc_planes(14,2)^1)*LK_mean_loc_planes(14,2))^2, 'md','MarkerSize',7);
-h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,15)/((ud_centerline_loc_planes(15,2)^1)*LK_mean_loc_planes(15,2))^2, 'm^','MarkerSize',7);
-xlim([0 0.4]);
-ylim([0 0.30]);
+% figure;
+% hold on
+% h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,12)/((ud_centerline_loc_planes(1,2)^1)*LK_mean_loc_planes(12,2))^2,     'bo','MarkerSize',7);
+% h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,13)/((ud_centerline_loc_planes(2,2)^1)*LK_mean_loc_planes(13,2))^2,     'r*','MarkerSize',7);
+% h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,14)/((ud_centerline_loc_planes(3,2)^1)*LK_mean_loc_planes(14,2))^2,  'kd','MarkerSize',7);
+% h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,15)/((ud_centerline_loc_planes(4,2)^1)*LK_mean_loc_planes(15,2))^2,  'c>','MarkerSize',7);
+% h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,16)/((ud_centerline_loc_planes(5,2)^1)*LK_mean_loc_planes(16,2))^2,  'g<','MarkerSize',7);
+% h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,17)/((ud_centerline_loc_planes(6,2)^1)*LK_mean_loc_planes(17,2))^2,  'b+','MarkerSize',7);
+% h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,18)/((ud_centerline_loc_planes(7,2)^1)*LK_mean_loc_planes(18,2))^2,  'r^','MarkerSize',7);
+% h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,19)/((ud_centerline_loc_planes(8,2)^1)*LK_mean_loc_planes(19,2))^2,  'kv','MarkerSize',7);
+% h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,20)/((ud_centerline_loc_planes(9,2)^1)*LK_mean_loc_planes(20,2))^2,  'gp','MarkerSize',7);
+% h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,21)/((ud_centerline_loc_planes(10,2)^1)*LK_mean_loc_planes(21,2))^2, 'ch','MarkerSize',7);
+% h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,11)/((ud_centerline_loc_planes(11,2)^1)*LK_mean_loc_planes(11,2))^2, 'bx','MarkerSize',7);
+% h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,12)/((ud_centerline_loc_planes(12,2)^1)*LK_mean_loc_planes(12,2))^2, 'b<','MarkerSize',7);
+% h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,13)/((ud_centerline_loc_planes(13,2)^1)*LK_mean_loc_planes(13,2))^2, 'mo','MarkerSize',7);
+% h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,14)/((ud_centerline_loc_planes(14,2)^1)*LK_mean_loc_planes(14,2))^2, 'md','MarkerSize',7);
+% h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,15)/((ud_centerline_loc_planes(15,2)^1)*LK_mean_loc_planes(15,2))^2, 'm^','MarkerSize',7);
+% xlim([0 0.4]);
+% ylim([0 0.3]);
 
 
 % m=1 normalized by (K^0.5/2*L_k)^2
-figure;
-hold on;
-h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,1)/((TKE_centerline_loc_planes(1,2)^0.5)*LK_TKE_loc_planes(1,2))^2,     'bo','MarkerSize',7);
-h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,2)/((TKE_centerline_loc_planes(2,2)^0.5)*LK_TKE_loc_planes(2,2))^2,     'r*','MarkerSize',7);
-h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,3)/((TKE_centerline_loc_planes(3,2)^0.5)*LK_TKE_loc_planes(3,2))^2,  'kd','MarkerSize',7);
-h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,4)/((TKE_centerline_loc_planes(4,2)^0.5)*LK_TKE_loc_planes(4,2))^2,  'c>','MarkerSize',7);
-h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,5)/((TKE_centerline_loc_planes(5,2)^0.5)*LK_TKE_loc_planes(5,2))^2,  'g<','MarkerSize',7);
-h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,6)/((TKE_centerline_loc_planes(6,2)^0.5)*LK_TKE_loc_planes(6,2))^2,  'b+','MarkerSize',7);
-h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,7)/((TKE_centerline_loc_planes(7,2)^0.5)*LK_TKE_loc_planes(7,2))^2,  'r^','MarkerSize',7);
-h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,8)/((TKE_centerline_loc_planes(8,2)^0.5)*LK_TKE_loc_planes(8,2))^2,  'kv','MarkerSize',7);
-h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,9)/((TKE_centerline_loc_planes(9,2)^0.5)*LK_TKE_loc_planes(9,2))^2,  'gp','MarkerSize',7);
-h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,10)/((TKE_centerline_loc_planes(10,2)^0.5)*LK_TKE_loc_planes(10,2))^2, 'ch','MarkerSize',7);
-h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,11)/((TKE_centerline_loc_planes(11,2)^0.5)*LK_TKE_loc_planes(11,2))^2, 'bx','MarkerSize',7);
-h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,12)/((TKE_centerline_loc_planes(12,2)^0.5)*LK_TKE_loc_planes(12,2))^2, 'b<','MarkerSize',7);
-h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,13)/((TKE_centerline_loc_planes(13,2)^0.5)*LK_TKE_loc_planes(13,2))^2, 'mo','MarkerSize',7);
-h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,14)/((TKE_centerline_loc_planes(14,2)^0.5)*LK_TKE_loc_planes(14,2))^2, 'md','MarkerSize',7);
-h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,15)/((TKE_centerline_loc_planes(15,2)^0.5)*LK_TKE_loc_planes(15,2))^2, 'm^','MarkerSize',7);
-xlim([0 0.4]);
-ylim([0 0.3]);
+% figure;
+% hold on;
+% h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,1)/((TKE_centerline_loc_planes(1,2)^0.5)*LK_TKE_loc_planes(1,2))^2,     'bo','MarkerSize',7);
+% h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,2)/((TKE_centerline_loc_planes(2,2)^0.5)*LK_TKE_loc_planes(2,2))^2,     'r*','MarkerSize',7);
+% h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,3)/((TKE_centerline_loc_planes(3,2)^0.5)*LK_TKE_loc_planes(3,2))^2,  'kd','MarkerSize',7);
+% h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,4)/((TKE_centerline_loc_planes(4,2)^0.5)*LK_TKE_loc_planes(4,2))^2,  'c>','MarkerSize',7);
+% h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,5)/((TKE_centerline_loc_planes(5,2)^0.5)*LK_TKE_loc_planes(5,2))^2,  'g<','MarkerSize',7);
+% h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,6)/((TKE_centerline_loc_planes(6,2)^0.5)*LK_TKE_loc_planes(6,2))^2,  'b+','MarkerSize',7);
+% h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,7)/((TKE_centerline_loc_planes(7,2)^0.5)*LK_TKE_loc_planes(7,2))^2,  'r^','MarkerSize',7);
+% h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,8)/((TKE_centerline_loc_planes(8,2)^0.5)*LK_TKE_loc_planes(8,2))^2,  'kv','MarkerSize',7);
+% h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,9)/((TKE_centerline_loc_planes(9,2)^0.5)*LK_TKE_loc_planes(9,2))^2,  'gp','MarkerSize',7);
+% h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,10)/((TKE_centerline_loc_planes(10,2)^0.5)*LK_TKE_loc_planes(10,2))^2, 'ch','MarkerSize',7);
+% h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,11)/((TKE_centerline_loc_planes(11,2)^0.5)*LK_TKE_loc_planes(11,2))^2, 'bx','MarkerSize',7);
+% h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,12)/((TKE_centerline_loc_planes(12,2)^0.5)*LK_TKE_loc_planes(12,2))^2, 'b<','MarkerSize',7);
+% h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,13)/((TKE_centerline_loc_planes(13,2)^0.5)*LK_TKE_loc_planes(13,2))^2, 'mo','MarkerSize',7);
+% h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,14)/((TKE_centerline_loc_planes(14,2)^0.5)*LK_TKE_loc_planes(14,2))^2, 'md','MarkerSize',7);
+% h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,15)/((TKE_centerline_loc_planes(15,2)^0.5)*LK_TKE_loc_planes(15,2))^2, 'm^','MarkerSize',7);
+% xlim([0 0.4]);
+% ylim([0 0.3]);
 
 
 % m=1 unnormalized
-figure;
-hold on;
-h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,1),     'bo','MarkerSize',7);
-h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,2),     'r*','MarkerSize',7);
-h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,3),  'kd','MarkerSize',7);
-h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,4),  'c>','MarkerSize',7);
-h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,5),  'g<','MarkerSize',7);
-h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,6),  'b+','MarkerSize',7);
-h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,7),  'r^','MarkerSize',7);
-h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,8),  'kv','MarkerSize',7);
-h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,9),  'gp','MarkerSize',7);
-h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,10), 'ch','MarkerSize',7);
-h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,11), 'bx','MarkerSize',7);
-h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,12), 'b<','MarkerSize',7);
-h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,13), 'mo','MarkerSize',7);
-h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,14), 'md','MarkerSize',7);
-h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,2,15), 'm^','MarkerSize',7);
-xlim([0 0.4]);
-ylim([0 0.005]);
+% figure;
+% hold on;
+% h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,1),     'bo','MarkerSize',7);
+% h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,2),     'r*','MarkerSize',7);
+% h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,3),  'kd','MarkerSize',7);
+% h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,4),  'c>','MarkerSize',7);
+% h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,5),  'g<','MarkerSize',7);
+% h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,6),  'b+','MarkerSize',7);
+% h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,7),  'r^','MarkerSize',7);
+% h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,8),  'kv','MarkerSize',7);
+% h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,9),  'gp','MarkerSize',7);
+% h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,10), 'ch','MarkerSize',7);
+% h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,11), 'bx','MarkerSize',7);
+% h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,12), 'b<','MarkerSize',7);
+% h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,13), 'mo','MarkerSize',7);
+% h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,14), 'md','MarkerSize',7);
+% h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,1,15), 'm^','MarkerSize',7);
+% xlim([0 0.4]);
+% ylim([0 0.005]);
 
 % figure;
 % hold on
@@ -243,29 +288,34 @@ ylim([0 0.005]);
 % xlim([0 0.4]);
 
 
-%h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,1)/sum(sum(eigenspectra_allm(:,:,2,1))), 'b-','LineWidth',2);
-%h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,2)/sum(sum(eigenspectra_allm(:,:,2,2))),'r-','LineWidth',2);
+% h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,1)/sum(sum(eigenspectra_allm(:,:,2,1))), 'b-','LineWidth',2);
+% h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,2)/sum(sum(eigenspectra_allm(:,:,2,2))),'r-','LineWidth',2);
 % h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,3)/sum(sum(eigenspectra_allm(:,:,2,3))),'k-','LineWidth',2);
 % h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,4)/sum(sum(eigenspectra_allm(:,:,2,4))),'k--','LineWidth',2);
 % h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,5)/sum(sum(eigenspectra_allm(:,:,2,5))),'r--','LineWidth',2);
 % h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,6)/sum(sum(eigenspectra_allm(:,:,2,6))),'b--','LineWidth',2);
 
 
-hXLabel = xlabel('$St$','interpreter','latex','fontsize',15);
-hYLabel = ylabel('$\lambda^{(1)}$','interpreter','latex','fontsize',15);
+% hXLabel = xlabel('$St$','interpreter','latex','fontsize',15);
+% hYLabel = ylabel('$\lambda^{(1)}(m=1,St=0.136)/(U_{d}L_{d})^{2}$','interpreter','latex','fontsize',15);
 % % %hTitle = title('Variation of $C_{p}$ vs $\theta$','interpreter','latex','fontsize',15);
 % 
-hLegend = legend([ h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15], 'x/D = 40', 'x/D = 45', 'x/D = 50', 'x/D = 55', 'x/D = 60', 'x/D = 65', ...
-            'x/D = 70', 'x/D = 75', 'x/D = 80', 'x/D = 85', 'x/D = 90', 'x/D = 95', 'x/D = 100', 'x/D = 110', 'x/D = 120');
+% hLegend = legend([ h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15], 'x/D = 40', 'x/D = 45', 'x/D = 50', 'x/D = 55', 'x/D = 60', 'x/D = 65', ...
+%             'x/D = 70', 'x/D = 75', 'x/D = 80', 'x/D = 85', 'x/D = 90', 'x/D = 95', 'x/D = 100', 'x/D = 110', 'x/D = 120');
         
-hLegend = legend([ h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15], 'x/D = 5', 'x/D = 10', 'x/D = 15', 'x/D = 20', 'x/D = 25', 'x/D = 30', ...
-                                                            'x/D = 35', 'x/D = 40', 'x/D = 45', 'x/D = 50', 'x/D = 55', 'x/D = 60', 'x/D = 65', 'x/D = 70', 'x/D = 75');
+% hLegend = legend([ h1, h2, h3, h4, h5, h6, h7, h8, h9, h10], 'x/D = 5', 'x/D = 10', 'x/D = 15', 'x/D = 20', 'x/D = 25', 'x/D = 30', ...
+%                                                            'x/D = 35', 'x/D = 40', 'x/D = 45', 'x/D = 50');
+                                                       
+                                                               
+% hLegend = legend([ h1, h2, h3, h4, h5, h6, h7, h8, h9, h10], 'x/D = 5', 'x/D = 10', 'x/D = 15', 'x/D = 20', 'x/D = 25', 'x/D = 30', ...
+%                                                            'x/D = 35', 'x/D = 40', 'x/D = 45', 'x/D = 50');
+%         
         
-hLegend.Interpreter = 'Latex';
-hLegend.FontSize = 10;
-hLegend.FontWeight = 'bold';
-hLegend.Position = [0 0 1 1];
-
+% hLegend.Interpreter = 'Latex';
+% hLegend.FontSize = 10;
+% hLegend.FontWeight = 'bold';
+% hLegend.Position = [0 0 1 1];
+% 
 % set(gcf, 'PaperPositionMode', 'auto');
-% print(gcf,'eigenspectra_m1_mode1_unnormalized_x_D_5_75.png','-dpng','-r600');  
-% print(gcf,'eigenspectra_m1_mode1_unnormalized_x_D_5_75.eps','-depsc','-r600');
+% print(gcf,'eigenspectra_m1_mode1_unnormalized_udefectld_x_D_5_50.png','-dpng','-r600');  
+% print(gcf,'eigenspectra_m1_mode1_normalized_udefectld_x_D_5_50.eps','-depsc','-r600');
