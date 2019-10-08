@@ -154,9 +154,9 @@ log_x_sampled_55 = log_x_sampled(1:11,1);
 %y_55_fitted = polyval(coeffs_55, log_x_sampled_55);
 %CI_55 = polyparci(coeffs_55, S_55, 0.99);
 
-% Scaling from x/D = 70 to 120
-log_spod_m1_st0136_120 = log_spod_m1_st0136(14:22,1);
-log_x_sampled_120 = log_x_sampled(14:22,1);
+% Scaling from x/D = 70 to 110
+log_spod_m1_st0136_120 = log_spod_m1_st0136(14:21,1);
+log_x_sampled_120 = log_x_sampled(14:21,1);
 [coeffs_m1_st0136_70_120, S_120] = polyfit(log_x_sampled_120, log_spod_m1_st0136_120, 1);
 %y_120_fitted = polyval(coeffs_120, log_x_sampled_120);
 %CI_120 = polyparci(coeffs_120, S_120, 0.99);
@@ -184,21 +184,21 @@ log_x_sampled = log(x_sample_closest);
 
 % Scaling in M2 from x/D = 10 onwards
 
-log_spod_m2_st0 = log_spod_m2_st0(2:end-1,1);
-[coeffs_m2_st0, S_m2_st0] = polyfit(log_x_sampled(2:end-1), log_spod_m2_st0, 1);
+log_spod_m2_st0 = log_spod_m2_st0(4:end-1,1);
+[coeffs_m2_st0, S_m2_st0] = polyfit(log_x_sampled(4:end-1), log_spod_m2_st0, 1);
 %y_m2_fitted = polyval(coeffs_m2, log_x_sampled(2:end-1));
 %CI_m2 = polyparci(coeffs_m2, S_m2, 0.99);
 %mse_m2 = immse(y_m2_fitted, log_spod_m2_st0);
 
 %% Scaling of (U_defect^2)(Ld)^2
 
-% Area integrated MKE till from x/D = 10 to x/D = 50
-% area_integrated_mke = (ud_centerline_loc_planes(:,2).*LK_mean_loc_planes(:,2)).^2;
-% log_mke = log(area_integrated_mke(1:10,1));
-% log_x_sampled_mke = log(x_sample_closest(1:10,1));
-% [coeffs_mke, S_mke] = polyfit(log_x_sampled_mke, log_mke, 1);
-% y_mke_fitted = polyval(coeffs_mke, log_x_sampled_mke);
-% CI_mke = polyparci(coeffs_mke, S_mke, 0.99);
+%Area integrated MKE till from x/D = 10 to x/D = 50
+area_integrated_mke = (ud_centerline_loc_planes(:,2).*LK_mean_loc_planes(:,2)).^2;
+log_mke = log(area_integrated_mke(1:10,1));
+log_x_sampled_mke = log(x_sample_closest(1:10,1));
+[coeffs_mke, S_mke] = polyfit(log_x_sampled_mke, log_mke, 1);
+y_mke_fitted = polyval(coeffs_mke, log_x_sampled_mke);
+CI_mke = polyparci(coeffs_mke, S_mke, 0.99);
 
 % Scaling from x/D = 70 to end
 % log_mke_120 = log(area_integrated_mke(14:22,1));
@@ -241,8 +241,8 @@ log_spod_m2_st0 = log_spod_m2_st0(2:end-1,1);
 %% Scaling of (K^1/2LK_TKE)^2 from actual data
 
 area_integrated_tke = ((TKE_centerline_loc_planes(:,2).^(0.5)).*LK_TKE_loc_planes(:,2)).^2;
-log_tke = log(area_integrated_tke(2:end-2,1));
-log_x_sampled_tke = log(x_sample_closest(2:end-2,1));
+log_tke = log(area_integrated_tke(4:end-2,1));
+log_x_sampled_tke = log(x_sample_closest(4:end-2,1));
 [coeffs_tke, S_tke] = polyfit(log_x_sampled_tke, log_tke, 1);
 y_tke_fitted = polyval(coeffs_tke, log_x_sampled_tke);
 CI_tke = polyparci(coeffs_tke, S_tke, 0.99);

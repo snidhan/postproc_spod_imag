@@ -87,13 +87,13 @@ ylim([10^-14 1*10^-1]);
 
 hXLabel = xlabel('$St$','interpreter','latex','fontsize',15);
 hYLabel = ylabel('SPOD mode energy','interpreter','latex','fontsize',15);
-%hTitle = title(strcat('SPOD eigenvalue spectra of 25 modes for $m = $',int2str(mode),', $x/D=$', int2str(x)), ...
-%                'interpreter','latex','fontsize',15);
+hTitle = title(strcat('SPOD eigenvalue spectra of 25 modes for $m = $',int2str(mode),', $x/D=$', int2str(x)), ...
+               'interpreter','latex','fontsize',15);
 %% Saving images
 
-%set(gcf, 'PaperPositionMode', 'auto');
-%print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.png'),'-dpng','-r600');  
-%print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.eps'),'-depsc','-r600');  
+set(gcf, 'PaperPositionMode', 'auto');
+print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.png'),'-dpng','-r600');  
+% print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.eps'),'-depsc','-r600');  
 
 % set(gcf, 'PaperPositionMode', 'auto');
 % print(gcf,strcat('spod_spectra_',int2str(mode),'_3dplane_','.png'),'-dpng','-r600');  

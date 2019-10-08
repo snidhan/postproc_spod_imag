@@ -242,31 +242,57 @@ end
 
 % close all;
 
-% figure;
-% hold on
-% h1 = plot(rc/LK_mean_loc_planes(2,2), abs(w_eigenmode_allm(:,1,6,2,2)).^2,'b-','LineWidth',2); 
-% h2 = plot(rc/LK_mean_loc_planes(3,2), abs(w_eigenmode_allm(:,1,6,2,3)).^2,'r-','LineWidth',2);
-% h3 = plot(rc/LK_mean_loc_planes(4,2), abs(w_eigenmode_allm(:,1,6,2,4)).^2,'k-','LineWidth',2);
-% h4 = plot(rc/LK_mean_loc_planes(5,2), abs(w_eigenmode_allm(:,1,6,2,5)).^2,'c-','LineWidth',2);
-% h5 = plot(rc/LK_mean_loc_planes(6,2), abs(w_eigenmode_allm(:,1,6,2,6)).^2,'m-','LineWidth',2);
-% h6 = plot(rc/LK_mean_loc_planes(7,2), abs(w_eigenmode_allm(:,1,6,2,7)).^2,'g-','LineWidth',2);
-% h7 = plot(rc/LK_mean_loc_planes(8,2), abs(w_eigenmode_allm(:,1,6,2,8)).^2,'y-','LineWidth',2);
-% h8 = plot(rc/LK_mean_loc_planes(9,2), abs(w_eigenmode_allm(:,1,6,2,9)).^2,'y--','LineWidth',2);
-% h9 = plot(rc/LK_mean_loc_planes(10,2), abs(w_eigenmode_allm(:,1,6,2,10)).^2,'g--','LineWidth',2);
-% h10 = plot(rc/LK_mean_loc_planes(11,2), abs(w_eigenmode_allm(:,1,6,2,11)).^2,'m--','LineWidth',2);
-% h11 = plot(rc/LK_mean_loc_planes(12,2), abs(w_eigenmode_allm(:,1,6,2,12)).^2,'c--','LineWidth',2);
-% h12 = plot(rc/LK_mean_loc_planes(13,2), abs(w_eigenmode_allm(:,1,6,2,13)).^2,'k--','LineWidth',2);
-% h13 = plot(rc/LK_mean_loc_planes(14,2), abs(w_eigenmode_allm(:,1,6,2,14)).^2,'r--','LineWidth',2);
-% h14 = plot(rc/LK_mean_loc_planes(15,2), abs(w_eigenmode_allm(:,1,6,2,15)).^2,'b--','LineWidth',2); %#ok<*NASGU>
-% h15 = plot(rc/LK_mean_loc_planes(16,2), abs(w_eigenmode_allm(:,1,6,2,16)).^2,'g-','LineWidth',2); %#ok<*NASGU>
-% h16 = plot(rc/LK_mean_loc_planes(17,2), abs(w_eigenmode_allm(:,1,6,2,17)).^2,'m-','LineWidth',2); %#ok<*NASGU>
-% h17 = plot(rc/LK_mean_loc_planes(18,2), abs(w_eigenmode_allm(:,1,6,2,18)).^2,'c-','LineWidth',2); %#ok<*NASGU>
-% h18 = plot(rc/LK_mean_loc_planes(19,2), abs(w_eigenmode_allm(:,1,6,2,19)).^2,'k-','LineWidth',2); %#ok<*NASGU>
-% h19 = plot(rc/LK_mean_loc_planes(20,2), abs(w_eigenmode_allm(:,1,6,2,20)).^2,'r-','LineWidth',2);
-% h20 = plot(rc/LK_mean_loc_planes(21,2), abs(w_eigenmode_allm(:,1,6,2,21)).^2,'b-','LineWidth',2);
+figure;
+hold on
+h1 = plot(rc, abs(w_eigenmode_allm(:,1,6,2,4)).^2,'bo','LineWidth',2); 
+h2 = plot(rc, abs(w_eigenmode_allm(:,1,1,3,8)).^2,'r-','LineWidth',2);
+h3 = plot(rc, abs(w_eigenmode_allm(:,1,1,3,16)).^2,'k-','LineWidth',2);
+%h4 = plot(rc, abs(w_eigenmode_allm(:,1,1,4,20)).^2,'c-','LineWidth',2);
+% h5 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,6)).^2,'m-','LineWidth',2);
+% h6 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,7)).^2,'g-','LineWidth',2);
+% h7 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,8)).^2,'y-','LineWidth',2);
+% h8 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,9)).^2,'y--','LineWidth',2);
+% h9 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,10)).^2,'g--','LineWidth',2);
+% h10 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,11)).^2,'m--','LineWidth',2);
+% h11 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,12)).^2,'c--','LineWidth',2);
+% h12 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,13)).^2,'k--','LineWidth',2);
+% h13 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,14)).^2,'r--','LineWidth',2);
+% h14 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,15)).^2,'b--','LineWidth',2); %#ok<*NASGU>
+% h15 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,16)).^2,'g-','LineWidth',2); %#ok<*NASGU>
+% h16 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,17)).^2,'m-','LineWidth',2); %#ok<*NASGU>
+% h17 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,18)).^2,'c-','LineWidth',2); %#ok<*NASGU>
+% h18 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,19)).^2,'k-','LineWidth',2); %#ok<*NASGU>
+% h19 = plot(rc, abs(w_eigenmode_allm(:,1,6,4,20)).^2,'r-','LineWidth',2);
+% h20 = plot(rc, abs(w_eigenmode_allm(:,1,6,4 ,21)).^2,'b-','LineWidth',2);
 
-% ylim([0 1.2]);
+ylim([0 1.2]);
 % xlim([0 4]);
+
+figure;
+hold on
+h1 = plot(rc, abs(u_eigenmode_allm(:,1,6,2,4)).^2,'bo','LineWidth',2); 
+h2 = plot(rc, abs(u_eigenmode_allm(:,1,1,3,8)).^2,'ro','LineWidth',2);
+h3 = plot(rc, abs(u_eigenmode_allm(:,1,1,3,16)).^2,'ko','LineWidth',2);
+% h4 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,22)).^2,'c-','LineWidth',2);
+% h5 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,6)).^2,'m-','LineWidth',2);
+% h6 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,7)).^2,'g-','LineWidth',2);
+% h7 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,8)).^2,'y-','LineWidth',2);
+% h8 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,9)).^2,'y--','LineWidth',2);
+% h9 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,10)).^2,'g--','LineWidth',2);
+% h10 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,11)).^2,'m--','LineWidth',2);
+% h11 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,12)).^2,'c--','LineWidth',2);
+% h12 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,13)).^2,'k--','LineWidth',2);
+% h13 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,14)).^2,'r--','LineWidth',2);
+% h14 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,15)).^2,'b--','LineWidth',2); %#ok<*NASGU>
+% h15 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,16)).^2,'g-','LineWidth',2); %#ok<*NASGU>
+% h16 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,17)).^2,'m-','LineWidth',2); %#ok<*NASGU>
+% h17 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,18)).^2,'c-','LineWidth',2); %#ok<*NASGU>
+% h18 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,19)).^2,'k-','LineWidth',2); %#ok<*NASGU>
+% h19 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,20)).^2,'r-','LineWidth',2);
+% h20 = plot(rc, abs(u_eigenmode_allm(:,1,6,4,21)).^2,'b-','LineWidth',2);
+
+ylim([0 1.2]);
+
 
 % figure;
 % hold on
@@ -294,30 +320,45 @@ end
 % ylim([0 1.2]);
 % xlim([0 5]);
 
-% figure;
-% hold on
-% h1 = plot(rc/LK_TKE_loc_planes(8,2), abs(u_eigenmode_allm(:,1,1,3,8)),'b-','LineWidth',2); 
-% h2 = plot(rc/LK_TKE_loc_planes(9,2), abs(u_eigenmode_allm(:,1,1,3,9)),'r-','LineWidth',2);
-% h3 = plot(rc/LK_TKE_loc_planes(10,2), abs(u_eigenmode_allm(:,1,1,3,10)),'k-','LineWidth',2);
-% h4 = plot(rc/LK_TKE_loc_planes(11,2), abs(u_eigenmode_allm(:,1,1,3,11)),'c-','LineWidth',2);
-% h5 = plot(rc/LK_TKE_loc_planes(12,2), abs(u_eigenmode_allm(:,1,1,3,12)),'m-','LineWidth',2);
-% h6 = plot(rc/LK_TKE_loc_planes(13,2), abs(u_eigenmode_allm(:,1,1,3,13)),'g-','LineWidth',2);
-% h7 = plot(rc/LK_TKE_loc_planes(14,2), abs(u_eigenmode_allm(:,1,1,3,14)),'y-','LineWidth',2);
-% h8 = plot(rc/LK_TKE_loc_planes(15,2), abs(u_eigenmode_allm(:,1,1,3,15)),'y--','LineWidth',2);
-% h9 = plot(rc/LK_TKE_loc_planes(16,2), abs(u_eigenmode_allm(:,1,1,3,16)),'g--','LineWidth',2);
-% h10 = plot(rc/LK_TKE_loc_planes(17,2), abs(u_eigenmode_allm(:,1,1,3,17)),'m--','LineWidth',2);
-% h11 = plot(rc/LK_TKE_loc_planes(18,2), abs(u_eigenmode_allm(:,1,1,3,18)),'c--','LineWidth',2);
-% h12 = plot(rc/LK_TKE_loc_planes(19,2), abs(u_eigenmode_allm(:,1,1,3,19)),'k--','LineWidth',2);
-% h13 = plot(rc/LK_TKE_loc_planes(20,2), abs(u_eigenmode_allm(:,1,1,3,20)),'r--','LineWidth',2);
-% h14 = plot(rc/LK_TKE_loc_planes(21,2), abs(u_eigenmode_allm(:,1,1,3,21)),'b--','LineWidth',2);
-% ylim([0 1.2]);
-% xlim([0 5]);
+figure;
+hold on
+h1 = plot(rc/LK_TKE_loc_planes(8,2), abs(u_eigenmode_allm(:,1,6,4,8)),'b-','LineWidth',2); 
+h2 = plot(rc/LK_TKE_loc_planes(9,2), abs(u_eigenmode_allm(:,1,6,4,9)),'r-','LineWidth',2);
+h3 = plot(rc/LK_TKE_loc_planes(10,2), abs(u_eigenmode_allm(:,1,6,4,10)),'k-','LineWidth',2);
+h4 = plot(rc/LK_TKE_loc_planes(11,2), abs(u_eigenmode_allm(:,1,6,4,11)),'c-','LineWidth',2);
+h5 = plot(rc/LK_TKE_loc_planes(12,2), abs(u_eigenmode_allm(:,1,6,4,12)),'m-','LineWidth',2);
+h6 = plot(rc/LK_TKE_loc_planes(13,2), abs(u_eigenmode_allm(:,1,6,4,13)),'g-','LineWidth',2);
+h7 = plot(rc/LK_TKE_loc_planes(14,2), abs(u_eigenmode_allm(:,1,6,4,14)),'y-','LineWidth',2);
+h8 = plot(rc/LK_TKE_loc_planes(15,2), abs(u_eigenmode_allm(:,1,6,4,15)),'y--','LineWidth',2);
+h9 = plot(rc/LK_TKE_loc_planes(16,2), abs(u_eigenmode_allm(:,1,6,4,16)),'g--','LineWidth',2);
+h10 = plot(rc/LK_TKE_loc_planes(17,2), abs(u_eigenmode_allm(:,1,6,4,17)),'m--','LineWidth',2);
+h11 = plot(rc/LK_TKE_loc_planes(18,2), abs(u_eigenmode_allm(:,1,6,4,18)),'c--','LineWidth',2);
+h12 = plot(rc/LK_TKE_loc_planes(19,2), abs(u_eigenmode_allm(:,1,6,4,19)),'k--','LineWidth',2);
+h13 = plot(rc/LK_TKE_loc_planes(20,2), abs(u_eigenmode_allm(:,1,6,4,20)),'r--','LineWidth',2);
+h14 = plot(rc/LK_TKE_loc_planes(21,2), abs(u_eigenmode_allm(:,1,6,4,21)),'b--','LineWidth',2);
+ylim([0 1.2]);
+xlim([0 5]);
+
+%% Plotting the contourmap plot for ux and ur modes for different modes
+theta = linspace(0, 2*pi, 100);
+mode  = real(w_eigenmode_allm(:,1,1,3,8))*sin(2*theta);
+[R THETA] = meshgrid(rc, theta);
+
+figure;
+[C h] = polarcont(rc,theta,mode);
+axis equal;
+colorbar;
+set(h,'EdgeColor','none')
+
 
 %% Putting the axes
-% hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
-% hYLabel = ylabel('$|\Phi_{x}|^{2}$/$|\Phi_{x}|_{max}$(m = 1, St = 0.136, Mode1)','interpreter','latex','fontsize',15);
-% % %hTitle = title('Variation of $C_{p}$ vs $\theta$','interpreter','latex','fontsize',15);
-% 
+hXLabel = xlabel('$r$','interpreter','latex','fontsize',15);
+hYLabel = ylabel('$|\Phi_{x}|^{2}$/$|\Phi_{x}|_{max}$(m = 3, St = 0, Mode1)','interpreter','latex','fontsize',15);
+%hTitle = title('Variation of $C_{p}$ vs $\theta$','interpreter','latex','fontsize',15);
+
+hLegend = legend([h1, h2, h3], 'x/D = 20', 'x/D = 40', 'x/D = 80');
+
+
 % hLegend = legend([h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14], 'x/D = 40', 'x/D = 45','x/D = 50',  ...
 %    'x/D = 55', 'x/D = 60', 'x/D = 65', 'x/D = 70', 'x/D = 75', 'x/D = 80', 'x/D = 85', 'x/D = 90', 'x/D = 95', 'x/D = 100', 'x/D = 110');
 
@@ -330,16 +371,14 @@ end
 % hLegend = legend([h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20], 'x/D = 50', 'x/D = 55', 'x/D = 60', 'x/D = 65', 'x/D = 70', 'x/D = 75', 'x/D = 80', 'x/D = 85', ...
 %                                     'x/D  = 90', 'x/D = 95', 'x/D = 100', 'x/D = 110');
 
-% hLegend.Interpreter = 'Latex';
-% hLegend.FontSize = 10;
-% hLegend.FontWeight = 'bold';
-% hLegend.Position = [0 0 1 1];
-% 
+hLegend.Interpreter = 'Latex';
+hLegend.FontSize = 10;
+hLegend.FontWeight = 'bold';
+hLegend.Position = [0 0 1 1];
 
-% set(gcf, 'PaperPositionMode', 'auto');
-% print(gcf,'phi_ux_m1_st0136_spodmode1_lk_50_110.png','-dpng','-r600');  
-% print(gcf,'phi_ux_m1_st0136_spodmode1_lk_50_110.eps','-depsc','-r600');
-
+set(gcf, 'PaperPositionMode', 'auto');
+print(gcf,'phi_ux_m3_st0_spodmode1_x_D_20_40_80.png','-dpng','-r600');  
+% print(gcf,'phi_ux_m3_st0136_spodmode1_lk_50_110.eps','-depsc','-r600');
 
 %% Plotting a contour map 
 

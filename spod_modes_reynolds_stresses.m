@@ -215,7 +215,6 @@ for m = 1:size(mode_sampled,1)
 end
 end
 
-
 %% Calculating Reynolds stresses from all m and f sampled
 
 nf_sampled = 20; nblk_sampled = 5; nm_sampled = 5;
@@ -228,23 +227,23 @@ for k = 1:size(x_sampled,1)
                 reystress_ww_mode(:,i,j,l,k) = squeeze(eigenspectra_allm(i,l,j,k)*real((w_eigenmode_allm(:,l,i,j,k).*conj(w_eigenmode_allm(:,l,i,j,k)))));
                 reystress_vv_mode(:,i,j,l,k) = squeeze(eigenspectra_allm(i,l,j,k)*real((v_eigenmode_allm(:,l,i,j,k).*conj(v_eigenmode_allm(:,l,i,j,k)))));
                 tke_mode(:,i,j,l,k)          = reystress_uu_mode(:,i,j,l,k) + reystress_ww_mode(:,i,j,l,k) + reystress_vv_mode(:,i,j,l,k);
-%                 reystress_uw_mode(:,i,j,l,k) = real((u_eigenmode_allm(:,l,i,j,k).*conj(w_eigenmode_allm(:,l,i,j,k))));
-%                 reystress_uu_mode(:,i,j,l,k) = real((u_eigenmode_allm(:,l,i,j,k).*conj(u_eigenmode_allm(:,l,i,j,k))));
-%                 reystress_ww_mode(:,i,j,l,k) = real((w_eigenmode_allm(:,l,i,j,k).*conj(w_eigenmode_allm(:,l,i,j,k))));
-%                 reystress_vv_mode(:,i,j,l,k) = real((v_eigenmode_allm(:,l,i,j,k).*conj(v_eigenmode_allm(:,l,i,j,k))));
-%                 tke_mode(:,i,j,l,k)          = reystress_uu_mode(:,i,j,l,k) + reystress_ww_mode(:,i,j,l,k) + reystress_vv_mode(:,i,j,l,k);
+%               reystress_uw_mode(:,i,j,l,k) = real((u_eigenmode_allm(:,l,i,j,k).*conj(w_eigenmode_allm(:,l,i,j,k))));
+%               reystress_uu_mode(:,i,j,l,k) = real((u_eigenmode_allm(:,l,i,j,k).*conj(u_eigenmode_allm(:,l,i,j,k))));
+%               reystress_ww_mode(:,i,j,l,k) = real((w_eigenmode_allm(:,l,i,j,k).*conj(w_eigenmode_allm(:,l,i,j,k))));
+%               reystress_vv_mode(:,i,j,l,k) = real((v_eigenmode_allm(:,l,i,j,k).*conj(v_eigenmode_allm(:,l,i,j,k))));
+%               tke_mode(:,i,j,l,k)          = reystress_uu_mode(:,i,j,l,k) + reystress_ww_mode(:,i,j,l,k) + reystress_vv_mode(:,i,j,l,k);
             end
         end
     end
 end
 
 
-for k = 1:size(x_sampled,1)
-    reystress_uw_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_uw_mode(:,:,:,:,k),2)),3));
-    reystress_ww_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_ww_mode(:,:,:,:,k),2)),3));
-    reystress_uu_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_uu_mode(:,:,:,:,k),2)),3));
-    reystress_vv_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_vv_mode(:,:,:,:,k),2)),3));
-    tke_combined(:,:,k)          = squeeze(sum(squeeze(sum(tke_mode(:,:,:,:,k),2)),3));
+for k = 1:size(x_sampled,1)  %% only taking the leading order POD mode at each (m,f)
+    reystress_uw_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_uw_mode(:,:,:,1,k),2)),3));
+    reystress_ww_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_ww_mode(:,:,:,1,k),2)),3));
+    reystress_uu_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_uu_mode(:,:,:,1,k),2)),3));
+    reystress_vv_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_vv_mode(:,:,:,1,k),2)),3));
+    tke_combined(:,:,k)          = squeeze(sum(squeeze(sum(tke_mode(:,:,:,1,k),2)),3));
 end
 
 total_tke_modes = squeeze(sum(tke_combined,2));
@@ -292,8 +291,6 @@ for x_loc_planes = 1:size(loc_planes,1)
     total_integrated_tke(x_loc_planes,1) = (2*pi/256)*trapz(trapz(rc,rc.*total_averaged_tke_2d(:,:,x_loc_planes),1));
 end
 
-
-
 %% Calculating the area integrated TKE at each location
 
 % for x_loc_planes = 1:size(loc_planes,1)
@@ -315,104 +312,104 @@ end
 
 %% Self-similarity of the Reynolds stresses for m modes
 
-nr = 354; ntheta = 256;
-figure; 
-hold on;
-C = {'k','b','r','g','m','c','k--','b--','r--','g--','m--','c--','k-.','b-.','r-.','g-.','m-.','c-.'}; % Cell array of colros.
-count = 1;
-
-Legend = cell(7,1);
-Legend{1} = 'x/D = 70';
-Legend{2} = 'x/D = 75';
-Legend{3} = 'x/D = 80';
-Legend{4} = 'x/D = 85';
-Legend{5} = 'x/D = 90';
-Legend{6} = 'x/D = 95';
-Legend{7} = 'x/D = 100';
+% nr = 354; ntheta = 256;
+% figure; 
+% hold on;
+% C = {'k','b','r','g','m','c','k--','b--','r--','g--','m--','c--','k-.','b-.','r-.','g-.','m-.','c-.'}; % Cell array of colros.
+% count = 1;
+% 
+% Legend = cell(7,1);
+% Legend{1} = 'x/D = 70';
+% Legend{2} = 'x/D = 75';
+% Legend{3} = 'x/D = 80';
+% Legend{4} = 'x/D = 85';
+% Legend{5} = 'x/D = 90';
+% Legend{6} = 'x/D = 95';
+% Legend{7} = 'x/D = 100';
 % Legend{8} = 'x/D = 40';
 % Legend{9} = 'x/D = 45';
 % Legend{10} = 'x/D = 50';
 
-for i = 14:20
-    disp(i);
-    plot(rc/LK_TKE_loc_planes(i,2), -reystress_uw_combined(:,2,i)/max(abs(reystress_uw_combined(:,2,i))), C{count}, 'Linewidth',2);
-    count = count + 1;
-end
+% for i = 14:20
+%     disp(i);
+%     plot(rc/LK_TKE_loc_planes(i,2), -reystress_uw_combined(:,2,i)/max(abs(reystress_uw_combined(:,2,i))), C{count}, 'Linewidth',2);
+%     count = count + 1;
+% end
 
-ylim([0 1.2])
-xlim([0 3]);
-
-hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
-hYLabel = ylabel('-$<u_{x}u_{r}>$/max($<u_{x}u_{r}>_{r}$) ($m=1$)','interpreter','latex','fontsize',15);
+% ylim([0 1.2])
+% xlim([0 3]);
+% 
+% hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
+% hYLabel = ylabel('-$<u_{x}u_{r}>$/max($<u_{x}u_{r}>_{r}$) ($m=1$)','interpreter','latex','fontsize',15);
 % %hTitle = title('Variation of $C_{p}$ vs $\theta$','interpreter','latex','fontsize',15);
 
-hLegend = legend(Legend);
-hLegend.Interpreter = 'Latex';
-hLegend.FontSize = 10;
-hLegend.FontWeight = 'bold';
-hLegend.Position = [0 0 1 1];
+% hLegend = legend(Legend);
+% hLegend.Interpreter = 'Latex';
+% hLegend.FontSize = 10;
+% hLegend.FontWeight = 'bold';
+% hLegend.Position = [0 0 1 1];
 
 %set(gcf, 'PaperPositionMode', 'auto');
 %print(gcf,strcat('unnormalized_uw_x_D_70_100_m1_lk', '.png'),'-dpng','-r600');  
 %print(gcf,strcat('unnormalized_uw_x_D_70_100_m1_lk', '.eps'),'-depsc','-r600');
 
-close;
+% close;
 
 %% Scaling for Reynolds stresses in streamwise direction
 
-figure; 
-hold on;
-C = {'k','b','r','g','m','c','k--','b--','r--','g--','m--','c--','k-.','b-.','r-.','g-.','m-.','c-.'}; % Cell array of colros.
-
-Legend = cell(7,1);
-Legend{1} = 'x/D = 40';
-Legend{2} = 'x/D = 45';
-Legend{3} = 'x/D = 50';
-Legend{4} = 'x/D = 55';
-Legend{5} = 'x/D = 60';
-Legend{6} = 'x/D = 65';
-Legend{7} = 'x/D = 70';
-Legend{8} = 'x/D = 75';
-Legend{9} = 'x/D = 80';
-Legend{10} = 'x/D = 85';
+% figure; 
+% hold on;
+% C = {'k','b','r','g','m','c','k--','b--','r--','g--','m--','c--','k-.','b-.','r-.','g-.','m-.','c-.'}; % Cell array of colros.
+% 
+% Legend = cell(7,1);
+% Legend{1} = 'x/D = 40';
+% Legend{2} = 'x/D = 45';
+% Legend{3} = 'x/D = 50';
+% Legend{4} = 'x/D = 55';
+% Legend{5} = 'x/D = 60';
+% Legend{6} = 'x/D = 65';
+% Legend{7} = 'x/D = 70';
+% Legend{8} = 'x/D = 75';
+% Legend{9} = 'x/D = 80';
+% Legend{10} = 'x/D = 85';
 
 % Equation 7.10 of Dairay et al. 2015 to find d\delta/dx
-wake_width_mean = LK_mean_loc_planes(8:17,2);
-loc = LK_mean_loc_planes(8:17,1);
-
+% wake_width_mean = LK_mean_loc_planes(8:17,2);
+% loc = LK_mean_loc_planes(8:17,1);
+% 
 % Scaling till x/D = 50
-log_wake_width_50 = log(wake_width_mean);
-log_loc =  log(loc);
-[coeffs, S] = polyfit(log_loc, log_wake_width_50, 1);
-y_fitted = polyval(coeffs, log_wake_width_50);
+% log_wake_width_50 = log(wake_width_mean);
+% log_loc =  log(loc);
+% [coeffs, S] = polyfit(log_loc, log_wake_width_50, 1);
+% y_fitted = polyval(coeffs, log_wake_width_50);
 % CI = polyparci(coeffs, S, 0.99);
 
 % Calculating d\delta/dx = \delta/x * d(log \delta)/d (log x)
 
-ddelta_dx = coeffs(1)*wake_width_mean./loc;
-scaling_factor = ud_centerline_loc_planes(8:17,2).*ddelta_dx;
-count = 1;
+% ddelta_dx = coeffs(1)*wake_width_mean./loc;
+% scaling_factor = ud_centerline_loc_planes(8:17,2).*ddelta_dx;
+% count = 1;
 
-for i = 8:17
-    disp(i);
-    %plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined(:,3,i)/(ux_centerline_loc_planes(i,2)^2), C{count}, 'Linewidth',2);
-    plot(rc/LK_mean_loc_planes(i,2), -4*reystress_uw_combined(:,3,i)/(scaling_factor(count)), C{count}, 'Linewidth',2);
-    count = count + 1;
-end
+% for i = 8:17
+%     disp(i);
+%     plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined(:,3,i)/(ux_centerline_loc_planes(i,2)^2), C{count}, 'Linewidth',2);
+%     plot(rc/LK_mean_loc_planes(i,2), -4*reystress_uw_combined(:,3,i)/(scaling_factor(count)), C{count}, 'Linewidth',2);
+%     count = count + 1;
+% end
 
-ylim([0 0.3])
-xlim([0 3]);
+% ylim([0 0.3])
+% xlim([0 3]);
 
 
-hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
-hYLabel = ylabel('-$<u_{x}u_{r}>$/$U_{\infty}U_{d}\frac{dL_{d}}{dx}$','interpreter','latex','fontsize',15);
-% %hTitle = title('Variation of $C_{p}$ vs $\theta$','interpreter','latex','fontsize',15);
+% hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
+% hYLabel = ylabel('-$<u_{x}u_{r}>$/$U_{\infty}U_{d}\frac{dL_{d}}{dx}$','interpreter','latex','fontsize',15);
+%hTitle = title('Variation of $C_{p}$ vs $\theta$','interpreter','latex','fontsize',15);
 
-hLegend = legend(Legend);
-hLegend.Interpreter = 'Latex';
-hLegend.FontSize = 10;
-hLegend.FontWeight = 'bold';
-hLegend.Position = [0 0 1 1];
+% hLegend = legend(Legend);
+% hLegend.Interpreter = 'Latex';
+% hLegend.FontSize = 10;
+% hLegend.FontWeight = 'bold';
+% hLegend.Position = [0 0 1 1];
 
 %set(gcf, 'PaperPositionMode', 'auto');
 %print(gcf,strcat('udddelta_uw_x_D_40_85_ld_m2', '.png'),'-dpng','-r600');  
@@ -421,27 +418,31 @@ close;
 
 %% Reconstruction of RS from the modal structure
 
-i = 12;
+% dirout = '/home/sheel/Work/codes/spod_re5e4_misc_analysis/spod_plots/files/';
+% save(strcat(dirout, 'reystress_in_ranseq_construct_similarity_diff_loc.mat'), ...
+%             'f', 'rc', 'reystress_uw_combined', 'reystress_ww_combined', ...
+%             'reystress_ww_1d', 'reystress_uw_1d','LK_TKE_loc_planes', 'LK_mean_loc_planes');
+
+i = 16;
 figure;
 hold on;
-h1 = plot(rc/LK_TKE_loc_planes(i,2), 4*reystress_ww_combined(:,3,i), 'm-', 'Linewidth',2);
-h2 = plot(rc/LK_TKE_loc_planes(i,2), 4*reystress_ww_combined(:,2,i), 'r-', 'Linewidth',2);
-h3 = plot(rc/LK_TKE_loc_planes(i,2), 2*reystress_ww_combined(:,1,i), 'b-', 'Linewidth',2);
-h4 = plot(rc/LK_TKE_loc_planes(i,2), reystress_ww_1d(:,i), 'k-', 'Linewidth',2);
-h5 = plot(rc/LK_TKE_loc_planes(i,2), 4*reystress_ww_combined(:,3,i)+4*reystress_ww_combined(:,2,i)+2*reystress_ww_combined(:,1,i),'k--', 'Linewidth',2);
-xlim([0 3]);
-hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
-hYLabel = ylabel('-$<u_{x}u_{x}>$','interpreter','latex','fontsize',15);
-hLegend = legend([h1, h2, h3, h4, h5], '(1) $\sum_{f = 0 \rightarrow 0.5 } m = 2$', '(2) $\sum_{f = 0 \rightarrow 0.5 } m =1$','(3) $\sum_{f = 0 \rightarrow 0.5 } m = 0$', ...
-                    'Averaged over 528 time units', '(1) + (2) + (3)');
+h1 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined(:,2,i), 'm-', 'Linewidth',2);
+h2 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined(:,4,i), 'r-', 'Linewidth',2);
+% h3 = plot(rc/LK_TKE_loc_planes(i,2), 2*reystress_ww_combined(:,1,i), 'b-', 'Linewidth',2);
+h3 = plot(rc/LK_TKE_loc_planes(i,2), -reystress_uw_1d(:,i), 'k-', 'Linewidth',2);
+% h5 = plot(rc/LK_TKE_loc_planes(i,2), 4*reystress_ww_combined(:,3,i)+4*reystress_ww_combined(:,2,i)+2*reystress_ww_combined(:,1,i),'k--', 'Linewidth',2);
+% xlim([0 3]);
+% hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
+% hYLabel = ylabel('-$<u_{x}u_{x}>$','interpreter','latex','fontsize',15);
+hLegend = legend([h1, h2, h3], '$m=1$ contribution', '$m=3$ contribution', 'From simulation');
 hLegend.Interpreter = 'Latex';
-hLegend.FontSize = 10;
+hLegend.FontSize = 15;
 hLegend.FontWeight = 'bold';
 hLegend.Position = [0 0 1 1];
-
+% 
 set(gcf, 'PaperPositionMode', 'auto');
-print(gcf,strcat('ww_x_D_60_reconstructed', '.png'),'-dpng','-r600');  
-print(gcf,strcat('ww_x_D_60_reconstructed', '.eps'),'-depsc','-r600');
+print(gcf,strcat('uw_x_D_80_reconstructed', '.png'),'-dpng','-r600');  
+% print(gcf,strcat('uw_x_D_20_reconstructed', '.eps'),'-depsc','-r600');
 %% Reynolds stress from the m=2 mode 
 
 % Scaling from the maximum value for reynolds stress

@@ -138,31 +138,31 @@ end
 
 
 %% Plotting eigenspectra of interest
-
-dirout = '/home/sheel/Work/codes/spod_re5e4_misc_analysis/spod_plots/files/';
-save(strcat(dirout, 'eigvalues_similarity_diff_loc.mat'), 'f', 'eigenspectra_allm', 'TKE_centerline_loc_planes', 'LK_TKE_loc_planes', ...
-                    'ud_centerline_loc_planes', 'LK_mean_loc_planes', 'mke_area_loc_planes', 'tke_area_loc_planes');
+% 
+% dirout = '/home/sheel/Work/codes/spod_re5e4_misc_analysis/spod_plots/files/';
+% save(strcat(dirout, 'eigvalues_similarity_diff_loc.mat'), 'f', 'eigenspectra_allm', 'TKE_centerline_loc_planes', 'LK_TKE_loc_planes', ...
+%                     'ud_centerline_loc_planes', 'LK_mean_loc_planes', 'mke_area_loc_planes', 'tke_area_loc_planes');
 
 % m=2, normalized by (K^0.5/2*L_k)^2
-% figure;
-% hold on;
-% h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,8)/((TKE_centerline_loc_planes(8,2)^0.5)*LK_TKE_loc_planes(8,2))^2,     'bo','MarkerSize',7); %#ok<*NASGU>
-% h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,9)/((TKE_centerline_loc_planes(9,2)^0.5)*LK_TKE_loc_planes(9,2))^2,     'r*','MarkerSize',7);
-% h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,10)/((TKE_centerline_loc_planes(10,2)^0.5)*LK_TKE_loc_planes(10,2))^2,  'kd','MarkerSize',7);
-% h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,11)/((TKE_centerline_loc_planes(11,2)^0.5)*LK_TKE_loc_planes(11,2))^2,  'c>','MarkerSize',7);
-% h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,12)/((TKE_centerline_loc_planes(12,2)^0.5)*LK_TKE_loc_planes(12,2))^2,  'g<','MarkerSize',7);
-% h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,13)/((TKE_centerline_loc_planes(13,2)^0.5)*LK_TKE_loc_planes(13,2))^2,  'b+','MarkerSize',7);
-% h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,14)/((TKE_centerline_loc_planes(14,2)^0.5)*LK_TKE_loc_planes(14,2))^2,  'r^','MarkerSize',7);
-% h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,15)/((TKE_centerline_loc_planes(15,2)^0.5)*LK_TKE_loc_planes(15,2))^2,  'kv','MarkerSize',7);
-% h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,16)/((TKE_centerline_loc_planes(16,2)^0.5)*LK_TKE_loc_planes(16,2))^2,  'gp','MarkerSize',7);
-% h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,17)/((TKE_centerline_loc_planes(17,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'ch','MarkerSize',7);
-% h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,18)/((TKE_centerline_loc_planes(18,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'bx','MarkerSize',7);
-% h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,19)/((TKE_centerline_loc_planes(19,2)^0.5)*LK_TKE_loc_planes(19,2))^2, 'b<','MarkerSize',7);
-% h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,20)/((TKE_centerline_loc_planes(20,2)^0.5)*LK_TKE_loc_planes(20,2))^2, 'mo','MarkerSize',7);
-% h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,21)/((TKE_centerline_loc_planes(21,2)^0.5)*LK_TKE_loc_planes(21,2))^2, 'md','MarkerSize',7);
-% h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,3,22)/((TKE_centerline_loc_planes(22,2)^0.5)*LK_TKE_loc_planes(22,2))^2, 'm^','MarkerSize',7);
-% xlim([0 0.4]);
-% ylim([0 0.3]);
+figure;
+hold on;
+h1 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,8)/((TKE_centerline_loc_planes(8,2)^0.5)*LK_TKE_loc_planes(8,2))^2,     'bo','MarkerSize',7); %#ok<*NASGU>
+h2 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,9)/((TKE_centerline_loc_planes(9,2)^0.5)*LK_TKE_loc_planes(9,2))^2,     'r*','MarkerSize',7);
+h3 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,10)/((TKE_centerline_loc_planes(10,2)^0.5)*LK_TKE_loc_planes(10,2))^2,  'kd','MarkerSize',7);
+h4 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,11)/((TKE_centerline_loc_planes(11,2)^0.5)*LK_TKE_loc_planes(11,2))^2,  'c>','MarkerSize',7);
+h5 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,12)/((TKE_centerline_loc_planes(12,2)^0.5)*LK_TKE_loc_planes(12,2))^2,  'g<','MarkerSize',7);
+h6 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,13)/((TKE_centerline_loc_planes(13,2)^0.5)*LK_TKE_loc_planes(13,2))^2,  'b+','MarkerSize',7);
+h7 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,14)/((TKE_centerline_loc_planes(14,2)^0.5)*LK_TKE_loc_planes(14,2))^2,  'r^','MarkerSize',7);
+h8 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,15)/((TKE_centerline_loc_planes(15,2)^0.5)*LK_TKE_loc_planes(15,2))^2,  'kv','MarkerSize',7);
+h9 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,16)/((TKE_centerline_loc_planes(16,2)^0.5)*LK_TKE_loc_planes(16,2))^2,  'gp','MarkerSize',7);
+h10 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,17)/((TKE_centerline_loc_planes(17,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'ch','MarkerSize',7);
+h11 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,18)/((TKE_centerline_loc_planes(18,2)^0.5)*LK_TKE_loc_planes(18,2))^2, 'bx','MarkerSize',7);
+h12 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,19)/((TKE_centerline_loc_planes(19,2)^0.5)*LK_TKE_loc_planes(19,2))^2, 'b<','MarkerSize',7);
+h13 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,20)/((TKE_centerline_loc_planes(20,2)^0.5)*LK_TKE_loc_planes(20,2))^2, 'mo','MarkerSize',7);
+h14 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,21)/((TKE_centerline_loc_planes(21,2)^0.5)*LK_TKE_loc_planes(21,2))^2, 'md','MarkerSize',7);
+h15 = plot(f(1:Nf_sampled)', eigenspectra_allm(:,1,5,22)/((TKE_centerline_loc_planes(22,2)^0.5)*LK_TKE_loc_planes(22,2))^2, 'm^','MarkerSize',7);
+xlim([0 0.4]);
+ylim([0 0.05]);
 
 % m=0, normalized by (K^0.5/2*L_k)^2
 % figure;
