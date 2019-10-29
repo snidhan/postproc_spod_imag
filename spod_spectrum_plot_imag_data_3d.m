@@ -1,4 +1,3 @@
-function [eigvalue, f] = spod_spectrum_plot_imag_data(x, m)
 %% Written by Sheel Nidhan
 %  Plotting the SPOD spectrum for a specific azimuthal wavenumber
 close all;
@@ -7,11 +6,11 @@ close all;
 Nfreq = 512;
 Novlp = 256;
 N     = 7200;
-mode  = m;
+mode  = 1;
 stride = 100;
 nstart = 1892600;
 nend = nstart + (N-1)*stride;
-dir2 = strcat('/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/x_D_', int2str(x), '/eigenspectrum/');
+dir2 = strcat('/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/3dplane_spod/', 'eigenvalues/');
 %dir2 = '/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/';
 disp(dir2);
 %% Reading the time file
@@ -65,12 +64,9 @@ for i  = 1:Nfreq
     eigvalue(i,:) = sort(eigvalue(i,:),'descend');
 end
 
-
-
-
 %% Plotting SPOD eigenvalues
 
-Nplot = 20;   % No. of modes to plot
+Nplot = 25;   % No. of modes to plot
 
 C = repmat(linspace(1,0.1,Nplot).',1,3);
 
@@ -84,17 +80,17 @@ for i = 1:Nplot
 end
 
 ylim([10^-14 1*10^-1]);
-xlim([0 2]);
 
 hXLabel = xlabel('$St$','interpreter','latex','fontsize',15);
 hYLabel = ylabel('SPOD mode energy','interpreter','latex','fontsize',15);
+%hTitle = title(strcat('SPOD eigenvalue spectra of 25 modes for $m = $',int2str(mode),', $x/D=$', int2str(x)), ...
+%               'interpreter','latex','fontsize',15);
 %% Saving images
 
 set(gcf, 'PaperPositionMode', 'auto');
-print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.png'),'-dpng','-r600');  
+print(gcf,strcat('spod_spectra_',int2str(mode),'3d_','.png'),'-dpng','-r600');  
 % print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.eps'),'-depsc','-r600');  
 
 % set(gcf, 'PaperPositionMode', 'auto');
 % print(gcf,strcat('spod_spectra_',int2str(mode),'_3dplane_','.png'),'-dpng','-r600');  
 % print(gcf,strcat('spod_spectra_',int2str(mode),'_3dplane_','.eps'),'-depsc','-r600');  
-

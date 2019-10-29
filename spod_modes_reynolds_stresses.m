@@ -244,6 +244,8 @@ for k = 1:size(x_sampled,1)  %% only taking the leading order POD mode at each (
     reystress_uu_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_uu_mode(:,:,:,1,k),2)),3));
     reystress_vv_combined(:,:,k) = squeeze(sum(squeeze(sum(reystress_vv_mode(:,:,:,1,k),2)),3));
     tke_combined(:,:,k)          = squeeze(sum(squeeze(sum(tke_mode(:,:,:,1,k),2)),3));
+    tke_combined_allnblk(:,:,k)  = squeeze(sum(squeeze(sum(squeeze(sum(tke_mode(:,:,:,:,k),4)),2)),3));
+    reystress_uw_combined_allnblk(:,:,k) = squeeze(sum(squeeze(sum(squeeze(sum(reystress_uw_mode(:,:,:,:,k),4)),2)),3));
 end
 
 total_tke_modes = squeeze(sum(tke_combined,2));
@@ -421,16 +423,45 @@ close;
 % dirout = '/home/sheel/Work/codes/spod_re5e4_misc_analysis/spod_plots/files/';
 % save(strcat(dirout, 'reystress_in_ranseq_construct_similarity_diff_loc.mat'), ...
 %             'f', 'rc', 'reystress_uw_combined', 'reystress_ww_combined', ...
+%             'reystress_ww_1d', 'reystress_uw_1d','LK_TKE_loc_planes', ...
+%             'LK_mean_loc_planes', 'total_averaged_tke_1d', 'tke_combined');
+
+i = 16;
+figure;
+hold on;
+h1 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,2,i), 'm-', 'Linewidth',2);
+h2 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,3,i), 'r-', 'Linewidth',2);
+h3 = plot(rc/LK_TKE_loc_planes(i,2), 2*tke_combined(:,1,i), 'b-', 'Linewidth',2);
+h3 = plot(rc/LK_TKE_loc_planes(i,2), total_averaged_tke_1d(:,i), 'k-', 'Linewidth',2);
+h5 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,3,i)+4*tke_combined(:,2,i)+2*tke_combined(:,1,i),'k--', 'Linewidth',2);
+% xlim([0 3]);
+% hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
+% hYLabel = ylabel('-$<u_{x}u_{x}>$','interpreter','latex','fontsize',15);
+hLegend = legend([h1, h2, h3], '$m=1$ contribution', '$m=2$ contribution', 'From simulation');
+hLegend.Interpreter = 'Latex';
+hLegend.FontSize = 15;
+hLegend.FontWeight = 'bold';
+hLegend.Position = [0 0 1 1];
+% 
+%set(gcf, 'PaperPositionMode', 'auto');
+%print(gcf,strcat('uw_x_D_80_reconstructed', '.png'),'-dpng','-r600');  
+% print(gcf,strcat('uw_x_D_20_reconstructed', '.eps'),'-depsc','-r600');
+
+%% Reconstruction of RS from the modal structure
+
+% dirout = '/home/sheel/Work/codes/spod_re5e4_misc_analysis/spod_plots/files/';
+% save(strcat(dirout, 'reystress_in_ranseq_construct_similarity_diff_loc.mat'), ...
+%             'f', 'rc', 'reystress_uw_combined', 'reystress_ww_combined', ...
 %             'reystress_ww_1d', 'reystress_uw_1d','LK_TKE_loc_planes', 'LK_mean_loc_planes');
 
 i = 16;
 figure;
 hold on;
-h1 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined(:,2,i), 'm-', 'Linewidth',2);
-h2 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined(:,4,i), 'r-', 'Linewidth',2);
-% h3 = plot(rc/LK_TKE_loc_planes(i,2), 2*reystress_ww_combined(:,1,i), 'b-', 'Linewidth',2);
+h1 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,2,i), 'm-', 'Linewidth',2);
+h2 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,3,i), 'r-', 'Linewidth',2);
+h3 = plot(rc/LK_TKE_loc_planes(i,2), -2*reystress_uw_combined_allnblk(:,1,i), 'b-', 'Linewidth',2);
 h3 = plot(rc/LK_TKE_loc_planes(i,2), -reystress_uw_1d(:,i), 'k-', 'Linewidth',2);
-% h5 = plot(rc/LK_TKE_loc_planes(i,2), 4*reystress_ww_combined(:,3,i)+4*reystress_ww_combined(:,2,i)+2*reystress_ww_combined(:,1,i),'k--', 'Linewidth',2);
+h5 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,3,i)-4*reystress_uw_combined_allnblk(:,2,i)-2*reystress_uw_combined_allnblk(:,1,i),'k--', 'Linewidth',2);
 % xlim([0 3]);
 % hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
 % hYLabel = ylabel('-$<u_{x}u_{x}>$','interpreter','latex','fontsize',15);
@@ -440,9 +471,12 @@ hLegend.FontSize = 15;
 hLegend.FontWeight = 'bold';
 hLegend.Position = [0 0 1 1];
 % 
-set(gcf, 'PaperPositionMode', 'auto');
-print(gcf,strcat('uw_x_D_80_reconstructed', '.png'),'-dpng','-r600');  
+%set(gcf, 'PaperPositionMode', 'auto');
+%print(gcf,strcat('uw_x_D_80_reconstructed', '.png'),'-dpng','-r600');  
 % print(gcf,strcat('uw_x_D_20_reconstructed', '.eps'),'-depsc','-r600');
+
+
+
 %% Reynolds stress from the m=2 mode 
 
 % Scaling from the maximum value for reynolds stress

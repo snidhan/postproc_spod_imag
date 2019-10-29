@@ -79,7 +79,7 @@ for i = 1:size(freq,2)
         xkol_plot(count,1) = freq(1,i)^(-5/3);
         freq_plot(count,1) = freq(1,i);
         count = count + 1;
-        endlin
+    end
 end
 
 
