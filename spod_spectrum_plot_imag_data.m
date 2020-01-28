@@ -64,10 +64,6 @@ end
 for i  = 1:Nfreq
     eigvalue(i,:) = sort(eigvalue(i,:),'descend');
 end
-
-
-
-
 %% Plotting SPOD eigenvalues
 
 Nplot = 20;   % No. of modes to plot
@@ -90,8 +86,8 @@ hXLabel = xlabel('$St$','interpreter','latex','fontsize',15);
 hYLabel = ylabel('SPOD mode energy','interpreter','latex','fontsize',15);
 %% Saving images
 
-set(gcf, 'PaperPositionMode', 'auto');
-print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.png'),'-dpng','-r600');  
+% set(gcf, 'PaperPositionMode', 'auto');
+% print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.png'),'-dpng','-r600');  
 % print(gcf,strcat('spod_spectra_',int2str(mode),'x_D_',int2str(x),'.eps'),'-depsc','-r600');  
 
 % set(gcf, 'PaperPositionMode', 'auto');

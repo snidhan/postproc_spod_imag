@@ -7,8 +7,9 @@ N      = 7200;
 stride = 100;
 nstart = 1892600;
 nend = nstart + (N-1)*stride;
-mode_sampled = [0; 1; 2; 3; 4; 5];
-x_sampled =  [5; 10; 15; 20; 25; 30; 35; 40; 45; 50; 55; 60; 65; 70; 75; 80; 85; 90; 95; 100; 110; 120];
+mode_sampled = [0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10];
+%x_sampled =  [5; 10; 15; 20; 25; 30; 35; 40; 45; 50; 55; 60; 65; 70; 75; 80; 85; 90; 95; 100; 110; 120];
+x_sampled = [40];
 loc_planes = [5; 10; 15; 20; 25; 30; 35; 40; 45; 50; 55; 60; 65; 70; 75; 80; 85; 90; 95; 100; 110; 120];
 
 nr = 354;
@@ -16,8 +17,8 @@ numvar = 3;
 Nblk = floor((N-Novlp)/(Nfreq-Novlp));
 Nrows = numvar*nr*Nblk;
 Nrows_permode = numvar*nr;
-Nblk_sampled = 5; 
-Nf_sampled = 50;
+Nblk_sampled = 20; 
+Nf_sampled = 200;
 
 dir_modes = '/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/matlab_files/modes/';
 dir_spec  = '/home/sheel/Work2/projects_data/spod_re5e4/frinf/spod_data/run_2.0/matlab_files/spectrum/';
@@ -217,7 +218,7 @@ end
 
 %% Calculating Reynolds stresses from all m and f sampled
 
-nf_sampled = 20; nblk_sampled = 5; nm_sampled = 5;
+nf_sampled = 20; nblk_sampled = 20; nm_sampled = 3;
 for k = 1:size(x_sampled,1)
     for i = 1:nf_sampled
         for j = 1:nm_sampled
@@ -248,7 +249,9 @@ for k = 1:size(x_sampled,1)  %% only taking the leading order POD mode at each (
     reystress_uw_combined_allnblk(:,:,k) = squeeze(sum(squeeze(sum(squeeze(sum(reystress_uw_mode(:,:,:,:,k),4)),2)),3));
 end
 
-total_tke_modes = squeeze(sum(tke_combined,2));
+total_tke_modes = squeeze(sum(tke_combined_allnblk,2));
+reystress_uw_modes = squeeze(sum(reystress_uw_combined_allnblk,2));
+
 %% Importing the actual reynolds stresses 
 nr = 354;
 ntheta = 256;
@@ -425,23 +428,24 @@ close;
 %             'f', 'rc', 'reystress_uw_combined', 'reystress_ww_combined', ...
 %             'reystress_ww_1d', 'reystress_uw_1d','LK_TKE_loc_planes', ...
 %             'LK_mean_loc_planes', 'total_averaged_tke_1d', 'tke_combined');
-
-i = 16;
+close all;
+i = 8;
 figure;
 hold on;
-h1 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,2,i), 'm-', 'Linewidth',2);
-h2 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,3,i), 'r-', 'Linewidth',2);
-h3 = plot(rc/LK_TKE_loc_planes(i,2), 2*tke_combined(:,1,i), 'b-', 'Linewidth',2);
-h3 = plot(rc/LK_TKE_loc_planes(i,2), total_averaged_tke_1d(:,i), 'k-', 'Linewidth',2);
-h5 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,3,i)+4*tke_combined(:,2,i)+2*tke_combined(:,1,i),'k--', 'Linewidth',2);
-% xlim([0 3]);
+% h1 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,2,i), 'm-', 'Linewidth',2);
+% h2 = plot(rc/LK_TKE_loc_planes(i,2), 4*tke_combined(:,3,i), 'r-', 'Linewidth',2);
+% h3 = plot(rc/LK_TKE_loc_planes(i,2), 2*tke_combined(:,1,i), 'b-', 'Linewidth',2);
+h4 = plot(rc/LK_TKE_loc_planes(i,2), total_averaged_tke_1d(:,i), 'k-', 'Linewidth',2);
+%h5 = plot(rc/LK_TKE_loc_planes(i,2), total_tke_modes(:,1), 'k--', 'Linewidth',2);
+h6 = plot(rc/LK_TKE_loc_planes(i,2), 4*sum(tke_combined_allnblk(:,2:end),2)+ 2*squeeze(tke_combined_allnblk(:,1)),'k--', 'Linewidth',2);
+xlim([0.03 3]);
 % hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
 % hYLabel = ylabel('-$<u_{x}u_{x}>$','interpreter','latex','fontsize',15);
-hLegend = legend([h1, h2, h3], '$m=1$ contribution', '$m=2$ contribution', 'From simulation');
-hLegend.Interpreter = 'Latex';
-hLegend.FontSize = 15;
-hLegend.FontWeight = 'bold';
-hLegend.Position = [0 0 1 1];
+% hLegend = legend([h1, h2, h3], '$m=1$ contribution', '$m=2$ contribution', 'From simulation');
+% hLegend.Interpreter = 'Latex';
+% hLegend.FontSize = 15;
+% hLegend.FontWeight = 'bold';
+% hLegend.Position = [0 0 1 1];
 % 
 %set(gcf, 'PaperPositionMode', 'auto');
 %print(gcf,strcat('uw_x_D_80_reconstructed', '.png'),'-dpng','-r600');  
@@ -453,23 +457,26 @@ hLegend.Position = [0 0 1 1];
 % save(strcat(dirout, 'reystress_in_ranseq_construct_similarity_diff_loc.mat'), ...
 %             'f', 'rc', 'reystress_uw_combined', 'reystress_ww_combined', ...
 %             'reystress_ww_1d', 'reystress_uw_1d','LK_TKE_loc_planes', 'LK_mean_loc_planes');
-
-i = 16;
+close all;
+i = 8;
 figure;
 hold on;
-h1 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,2,i), 'm-', 'Linewidth',2);
-h2 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,3,i), 'r-', 'Linewidth',2);
-h3 = plot(rc/LK_TKE_loc_planes(i,2), -2*reystress_uw_combined_allnblk(:,1,i), 'b-', 'Linewidth',2);
-h3 = plot(rc/LK_TKE_loc_planes(i,2), -reystress_uw_1d(:,i), 'k-', 'Linewidth',2);
-h5 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,3,i)-4*reystress_uw_combined_allnblk(:,2,i)-2*reystress_uw_combined_allnblk(:,1,i),'k--', 'Linewidth',2);
+% h1 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,2,i), 'm-', 'Linewidth',2);
+% h2 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,3,i), 'r-', 'Linewidth',2);
+% h3 = plot(rc/LK_TKE_loc_planes(i,2), -2*reystress_uw_combined_allnblk(:,1,i), 'b-', 'Linewidth',2);
+h4 = plot(rc/LK_TKE_loc_planes(i,2), -reystress_uw_1d(:,i), 'k-', 'Linewidth',2);
+% h5 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_modes (:,1), 'k--', 'Linewidth',2);
+h6 = plot(rc/LK_TKE_loc_planes(i,2), -4*sum(reystress_uw_combined_allnblk(:,2:end),2)-2*squeeze(reystress_uw_combined_allnblk(:,1)),'k--', 'Linewidth',2);
+
+% h6 = plot(rc/LK_TKE_loc_planes(i,2), -4*reystress_uw_combined_allnblk(:,3,i)-4*reystress_uw_combined_allnblk(:,2,i)-2*reystress_uw_combined_allnblk(:,1,i),'k--', 'Linewidth',2);
 % xlim([0 3]);
 % hXLabel = xlabel('$r/L_{k}$','interpreter','latex','fontsize',15);
 % hYLabel = ylabel('-$<u_{x}u_{x}>$','interpreter','latex','fontsize',15);
-hLegend = legend([h1, h2, h3], '$m=1$ contribution', '$m=3$ contribution', 'From simulation');
-hLegend.Interpreter = 'Latex';
-hLegend.FontSize = 15;
-hLegend.FontWeight = 'bold';
-hLegend.Position = [0 0 1 1];
+% hLegend = legend([h1, h2, h3], '$m=1$ contribution', '$m=3$ contribution', 'From simulation');
+% hLegend.Interpreter = 'Latex';
+% hLegend.FontSize = 15;
+% hLegend.FontWeight = 'bold';
+% hLegend.Position = [0 0 1 1];
 % 
 %set(gcf, 'PaperPositionMode', 'auto');
 %print(gcf,strcat('uw_x_D_80_reconstructed', '.png'),'-dpng','-r600');  
